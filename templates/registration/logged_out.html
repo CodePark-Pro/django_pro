@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}ログアウト画面{% endblock %}
+
+{% block content %}
+<div>
+    <p>ログアウトしました</p>
+    <p><a href="{% url 'accounts:login' %}">ログイン画面へ</a></p>
+</div>
+{% endblock %}

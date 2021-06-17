@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{%load static%}
+
+{%block content%}
+    <h2>投稿詳細表示</h2>
+    <div>
+        <strong>タイトル</strong>
+        {{ object.title }}
+    </div>
+    <div>
+        <strong>内容</strong>
+        {{ object.content }}
+    </div>
+    <div>
+        <strong>投稿日</strong>
+        {{ object.created_at }}
+    </div>
+    <div>
+        <strong>投稿者</strong>
+        {{ object.created_by }}
+    </div>
+    <div class ="image">
+        {% if object.image1 or object.image2 or object.image3 %}
+        <strong>投稿画像</strong>
+        {% endif %}
+        {% if object.image1 %}
+            <p><img src="{{ object.image1.url }}" style="width:300px;height:auto"></p>
+        {% endif %}
+        {% if object.image2 %}
+            <p><img src="{{ object.image2.url }}" style="width:300px;height:auto"></p>
+        {% endif %}
+        {% if object.image3 %}
+            <p><img src="{{ object.image3.url }}" style="width:300px;height:auto"></p>
+        {% endif %}
+    </div>
+    <div>
+    {% if object.map_addrs %}
+        <p><strong>地図情報</strong></p>
+        <iframe id='map'
+            src='https://www.google.com/maps/embed/v1/place?key=AIzaSyBT2xTvA-_OJEynsf18grsbtF4Me4Ns3M8&amp;q={{ object.map_addrs }}'
+            width='400'
+            height='400'
+            frameborder='0'>
+        </iframe>
+    {% endif %}
+    </div>
+    <div>
+        <a href={% url 'post_app:post_list' %}>投稿一覧</a>
+    </div>
+{%endblock%}

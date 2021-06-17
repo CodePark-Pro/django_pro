@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{%load static%}
+
+{% block link %}
+<link rel="stylesheet" type="text/css" href="{% static 'accounts/post_list.css' %}">
+{% endblock %}
+
+{%block content%}
+    <h2>投稿一覧</h2>
+    <table width="800">
+        <thead>
+            <form action={% url 'post_app:post_list' %} method="get">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <!---------<label for="post_name">投稿者：</label>
+                <input name="name" value="{{ request.GET.name }}" type="text" id="post_name"><br>
+                <label for="word">検索ワード：</label>
+                <input name="query" value="{{ request.GET.query }}" type="text" id="word"><br> -------->
+                <button type="submit">検索する</button><br>
+            </form>
+            <br>
+            {%if postapp_list %}
+            <tr>
+                <th>タイトル</th>
+                <th>内容</th>
+                <th>投稿日時</th>
+                <th>投稿者</th>
+            </tr>
+            {%else%}
+            <p>まだ投稿はありません。</p>
+            {%endif%}
+        </thead>
+        <tfoot>
+                {% for post in post_list %}
+                <tr>
+                <td>{{ post.title| truncatechars:8 }}</td>
+                <td>
+                <a href="{% url 'post_app:post_detail' post.pk %}">
+                {{ post.content | truncatechars:15 }}</a></td>
+                </a>
+                <td>{{ post.created_at }}</td>
+                <td><a href="{% url 'accounts:user_profile' post.created_by.pk %}">{{ post.created_by }}</a></td>
+                </tr>
+                {% endfor %}
+            
+        </tfoot>
+    </table>
+{%endblock%}

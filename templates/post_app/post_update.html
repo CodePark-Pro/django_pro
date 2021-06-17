@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{%load static%}
+
+{%block content%}
+    <h2>投稿編集</h2>
+    <form enctype="multipart/form-data" method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">更新</button>
+        <input type="button" value="キャンセル" onClick="javascript:history.go(-1);">
+    </form>
+{%endblock%}

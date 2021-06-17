@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{%load static%}
+
+{% block link %}
+<link rel="stylesheet" type="text/css" href="{% static 'accounts/user_profile.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'accounts/post_list.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'base.css' %}">
+{% endblock %}
+
+{% block content %}
+<div id="profile_page">
+    <div id="user_status">
+        {% if object.icon %}
+            <img src="{{ object.icon.url }}" class="user-icon">
+        {% else %}
+            <img src="{% static 'images/user_icon.png' %}" class="user-icon">
+        {% endif %}
+        <h2>{{ object.username }}</h2>
+        <p><a href={% url 'accounts:follow_list' object.pk 1 %}>フォローしている人の数:{{object.followers.count}}</a></p>
+        <p><a href={% url 'accounts:follow_list' object.pk 0 %}>フォローされている人の数:{{object.followees.count}}</a></p>
+        
+        {% if object.pk != request.user.pk %}
+            {% if object in request.user.followers.all %}
+                <a href={% url 'accounts:profile_follow' object.pk %} class="btn btn--blue btn--radius">フォロー解除</a>
+            {% else %}
+                <a href={% url 'accounts:profile_follow' object.pk %} class="btn btn--blue btn--radius">フォローする</a>
+            {% endif %}
+        {% endif %}
+        {% if object.introduction %}
+        <p>{{ object.introduction }}</p>
+        {% endif %}
+    </div>
+    <div id="user_post">
+        <p class="list-t">{{ object.username }}さんの投稿一覧</p>
+        <table width="600">
+            <thead>
+                {%if object.postapp_set.all%}
+                <tr>
+                    <th>タイトル</th>
+                    <th>内容</th>
+                    <th>投稿日時</th>
+                    {% if object.pk == request.user.pk %}
+                    <th>編集</th>
+                    {% endif %}
+                </tr>
+                {%else%}
+                <p>まだ投稿はありません。</p>
+                {% endif %}
+            </thead>
+            <tfoot>
+                    {% for post in object.postapp_set.all %}
+                    <tr>
+                    <td>{{ post.title  | truncatechars:8}}</td>
+                    <td>{{ post.content | truncatechars:15 }}</td>
+                    <td>{{ post.created_at }}</td>
+                        {% if object.pk == request.user.pk %}
+                            <td>
+                                <a href={% url 'post_app:post_update' post.pk %} class="btn btn--blue btn--radius">編集</a>
+                                <a href={% url 'post_app:post_delete' post.pk %} class="btn btn--blue btn--radius">削除</a>
+                            </td>
+                        {%endif%}
+                    </tr>
+                    {% endfor %}
+                
+            </tfoot>
+        </table>
+        
+    </div>
+</div>
+{% endblock %}

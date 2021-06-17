@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}ログインフォーム画面{% endblock %}
+
+{% block content %}
+<div>
+    <form method="post">
+    <!--<form action= "{% url 'accounts:login' %}" enctype="multipart/form-data" method="POST">-->
+        {% csrf_token %}
+        {{ login_form.as_p }}
+        <!--{{form.as_p}}-->
+        <button type="submit" class="btn btn-primary">ログイン</button>
+    </form>
+    <p><a href= "{% url 'accounts:user_registration' %}">新規登録はこちら</a></p>
+    <p><a href="{% url 'password_reset' %}">パスワードを忘れた</a></p>
+</div>
+{% endblock %}

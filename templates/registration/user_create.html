@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}新規ユーザー登録画面{% endblock %}
+
+{% block content %}
+<div>
+  <form method="post">
+      {% csrf_token %}
+      {{ registration_form.as_p }}
+      <button type="submit" class="btn btn-primary">送信</button>
+  </form>
+  <a href= "{% url 'accounts:login' %}">ログイン画面へ戻る</a>
+</div>
+{% endblock %}

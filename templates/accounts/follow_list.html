@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{%load static%}
+
+{% block link %}
+<link rel="stylesheet" type="text/css" href="{% static 'accounts/user_profile.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'accounts/post_list.css' %}">
+{% endblock %}
+
+{%block content%}
+    {% if flag%}
+        <h2>フォローしている人</h2>
+    {% else %}
+        <h2>フォローされている人</h2>
+    {% endif %}
+    <table width="800">
+        <thead>
+            {%if follow %}
+            <tr>
+                <th>アイコン</th>
+                <th>ユーザー名</th>
+            </tr>
+            {%else%}
+            <p>まだいません。</p>
+            {%endif%}
+        </thead>
+        <tfoot>
+                {% for obj in follow %}
+                <tr>
+                    {% if obj.icon %}
+                    <td><img src="{{ obj.icon.url }}" class="user-icon"></td>
+                    {% else %}
+                    <td><img src="{% static 'images/user_icon.png' %}" class="user-icon"></td>
+                    {% endif %}
+                <td>{{ obj.username }}</td>
+                </tr>
+                {% endfor %}
+            
+        </tfoot>
+    </table>
+{%endblock%}
